@@ -1,6 +1,8 @@
 const path = require('path');
 const User = require('../models/userModels');
 const bcrypt = require('bcrypt')
+const jwt = require("jsonwebtoken");
+
 
 
 const getSignupPage = async (req,res,next)=>{
@@ -45,11 +47,54 @@ const postSignUp = async(req,res,next)=>{
         console.log(err);
         return res.status(500).json({error:err,message:"Something went Wrong"});
     }
-
 }
+function generateAccessToken(id,email){
+    return jwt.sign({userId:id,email:email},'7f3251c2e0ac5bbf51dbf3f9d5b7a6959b8be2d5a3a421ed7c9fe4c781faa5d7')
+}
+const postLogin = async (req, res, next) => {
+
+    try {
+        const { email, password } = req.body;
+
+       return  await User.findOne({ where: { email: email } }).then((response) => {
+            if (response) {
+                console.log(response);
+                bcrypt.compare(password, response.password, (err, passwordMatch) => {
+                    if (err) {
+                        return res.status(500).json({ success: false, message: "Something Went wrong" })
+                    }
+                    if (passwordMatch == true) {
+                        return res.status(200).json({
+                            success: true,
+                            message: "Logged In Successfully",token:generateAccessToken(response.id,response.email)
+                        })
+                    } else {
+                        return res.status(401).json({
+                            success: false,
+                            message: "User not authorized",
+                        })
+                    }
+
+                })
+            }
+            else {
+                return res.status(404).json({
+                    success: false,
+                    message: "User not found"
+                })
+            }
+        })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+
 
 module.exports={
     getSignupPage,
     postSignUp,
-    getLoginPage
+    getLoginPage,
+    postLogin
 }

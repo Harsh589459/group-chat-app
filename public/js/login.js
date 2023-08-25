@@ -37,14 +37,20 @@ async function postSignupPage() {
     }
     try{
     const response = await axios.post(`${endpoint}/user/login`,data);
-    console.log(response.status);
+    console.log(response);
      alert("Logged in successfull")
-    //  window.location.href = "/login"; 
+     window.location.href = "/login"; 
     }catch(err){
-        // if(err.response.status=409){
-        //     showValidationError('email-error', 'User already exists, Please Sign In');
-        //     console.log("first")
-        // }
+         if(err.response.data.message==="User not found"){
+            showValidationError('email-error', "User doesn't exist");
+        }
+        else if(err.response.data.message==="User not authorized"){
+            showValidationError('password-error', 'Incorrect Password');
+        }
+        
+        else{
+            alert("Something went wrong")
+        }
         console.log(err);
         
     }
