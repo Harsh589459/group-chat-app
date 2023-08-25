@@ -23,8 +23,8 @@
 .card {
   border-radius: 10px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
-  width: 400px;
-  height: 450px;
+  width: 530px;
+  height:min-content;
   background-color: #ffffff;
   padding: 10px 30px;
 }
@@ -78,4 +78,16 @@
 .card a {
   color: #4796ff;
   text-decoration: none;
+}
+#user-exists{
+  display: none;
+  text-align: center;
+}
+
+.show-hide{
+  position:relative;
+  left:414px;
+  bottom:34px;
+  cursor: pointer;
+  font-size: 14px;
 }
