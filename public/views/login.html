@@ -15,25 +15,22 @@
   <div class="container">
     <div class="card">
       <div class="card_title">
-        <h1>Create Account</h1>
-        <span>Already have an account? <a href="login">Sign In</a></span>
+        <h1>Sign In to your Account</h1>
+        <span>Don't have an account? <a href="/">Sign Up</a></span>
       </div>
       <div class="form">
         <form>
-          <input type="text" name="username" id="username" class="mt-2" placeholder="Name" />
-          <div id="username-error" class="text-danger mb-2 mt-1 validation-error"></div>
+     
 
           <input type="email" name="email" class="mt-2" placeholder="Email" id="email" />
           <div id="email-error" class="text-danger mb-2 mt-1 validation-error"></div>
 
-          <input type="number" name="phone" id="phone" class="mt-2" placeholder="Phone number" />
-          <div id="phone-error" class="text-danger mb-2 mt-1 validation-error"></div>
-
           <input type="password" name="password" class="mt-2 mb-0" placeholder="Password" id="password" />
           <span class="show-hide text-primary " id="toggle-password">Show</span>
           <div id="password-error" class="text-danger mb-2  cursor-pointer validation-error"></div>
-          <button type="button" class="mt-2 mb-2 cursor-pointer">Sign Up</button>
+          <button type="button" class="mt-2 mb-2 cursor-pointer">Login</button>
         </form>
+        <div id="user-exists" class="text-danger mb-2 mt-4"></div>
       </div>
 
     </div>
@@ -44,7 +41,7 @@
     integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
     crossorigin="anonymous"></script>
 
-  <script src="/js/signUp.js"></script>
+  <script src="/js/login.js"></script>
 
 
 </body>

@@ -1,13 +1,12 @@
 const endpoint = 'http://localhost:3000'
 
 const signUpBtn = document.querySelector('button')
-const userExist = document.getElementById('user-exists')
 const togglePasswordButton = document.getElementById('toggle-password');
 let passwordcontent = document.getElementById('password');
 
 
 
-
+// Post Signup page
 async function postSignupPage() {
     let name = document.getElementById('username').value;
     let email = document.getElementById('email').value;
@@ -17,36 +16,36 @@ async function postSignupPage() {
 
     clearValidationErrors();
     let emptyField = false;
-        
-        if (!name) {
-            showValidationError('username-error', 'Username is required*');
-            emptyField = true;
+
+    if (!name) {
+        showValidationError('username-error', 'Name is required*');
+        emptyField = true;
+    }
+
+    if (!email) {
+        showValidationError('email-error', 'Email is required*');
+        emptyField = true;
+    }
+
+    if (!number) {
+        showValidationError('phone-error', 'Phone number is required*');
+        emptyField = true;
+    }
+
+    if (!password || password.length < 8) {
+        if (password.length < 8) {
+            showValidationError('password-error', 'Password should be of 8 characters*');
         }
-        
-        if (!email) {
-            showValidationError('email-error', 'Email is required*');
-            emptyField = true;
-        }
-        
-        if (!number) {
-            showValidationError('phone-error', 'Phone number is required*');
-            emptyField = true;
-        }
-        
-        if (!password || password.length<8) {
-            if(password.length<8){
-                showValidationError('password-error', 'Password should be of 8 characters*');
-            }
-            else{
-                showValidationError('password-error', 'Password is required*');
+        else {
+            showValidationError('password-error', 'Password is required*');
 
 
-            }
-            emptyField = true;
         }
-        if(emptyField){
-            return;
-        }
+        emptyField = true;
+    }
+    if (emptyField) {
+        return;
+    }
 
     const data = {
         name,
@@ -54,19 +53,19 @@ async function postSignupPage() {
         number,
         password
     }
-    try{
-    const response = await axios.post(`${endpoint}/user/signup`,data);
-    console.log(response.status);
-    console.log(response.data)
-     alert("Successfully Signed Up")
-     window.location.href = "/login"; 
-    }catch(err){
-        if(err.response.status=409){
-            userExist.style.display='block';
+    try {
+        const response = await axios.post(`${endpoint}/user/signup`, data);
+        console.log(response.status);
+        console.log(response.data)
+        alert("Successfully Signed Up")
+        window.location.href = "/login";
+    } catch (err) {
+        if (err.response.status = 409) {
+            showValidationError('email-error', 'User already exists, Please Sign In');
             console.log("first")
         }
         console.log(err);
-        
+
     }
 }
 
@@ -83,7 +82,7 @@ function clearValidationErrors() {
     });
 }
 
-function showHidePassword(){
+function showHidePassword() {
     console.log(passwordcontent)
     if (passwordcontent.type === 'password') {
         passwordcontent.type = 'text';
@@ -95,6 +94,6 @@ function showHidePassword(){
 
 }
 
-togglePasswordButton.addEventListener('click',showHidePassword);
+togglePasswordButton.addEventListener('click', showHidePassword);
 
-signUpBtn.addEventListener('click',postSignupPage);
+signUpBtn.addEventListener('click', postSignupPage);

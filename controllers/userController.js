@@ -11,6 +11,14 @@ const getSignupPage = async (req,res,next)=>{
         console.log(error);
     }
 }
+const getLoginPage = async (req,res,next)=>{
+    try{
+        res.sendFile(path.join(__dirname,"../","public","views","login.html"))
+    }
+    catch(error){
+        console.log(error);
+    }
+}
 
 const postSignUp = async(req,res,next)=>{
     try{
@@ -42,5 +50,6 @@ const postSignUp = async(req,res,next)=>{
 
 module.exports={
     getSignupPage,
-    postSignUp
+    postSignUp,
+    getLoginPage
 }
