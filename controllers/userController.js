@@ -49,7 +49,7 @@ const postSignUp = async(req,res,next)=>{
     }
 }
 function generateAccessToken(id,email){
-    return jwt.sign({userId:id,email:email},'7f3251c2e0ac5bbf51dbf3f9d5b7a6959b8be2d5a3a421ed7c9fe4c781faa5d7')
+    return jwt.sign({userId:id,email:email},process.env.TOKEN)
 }
 const postLogin = async (req, res, next) => {
 
