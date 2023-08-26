@@ -14,7 +14,6 @@ const getChatPage = async (req,res,next)=>{
     }
 }
 const sendMessage = async (req, res, next) => {
-    
     try {
       await Chat.create({
         name: req.user.name,
@@ -28,7 +27,19 @@ const sendMessage = async (req, res, next) => {
     }
   };
 
+  const getMessage = async (req,res,next)=>{
+    try{
+       const messags =  await Chat.findAll()
+       return res.status(200).json({messages:messags})
+    }
+    catch(error){
+        console.log(error);
+
+    }
+  }
+
 module.exports={
     getChatPage,
-    sendMessage
+    sendMessage,
+    getMessage
 }
