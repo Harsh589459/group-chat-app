@@ -4,6 +4,7 @@ const app =express();
 
 //routes imported
 const userRoutes = require('./routes/userRoutes')
+const chatRoutes = require('./routes/chatRoutes')
 
 
 
@@ -14,5 +15,6 @@ app.use(express.json());
 // }));
 app.use('/',userRoutes);
 app.use('/user',userRoutes);
+app.use('/chat',chatRoutes)
 
 app.listen(3000);

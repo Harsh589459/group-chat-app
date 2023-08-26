@@ -39,7 +39,7 @@ async function postSignupPage() {
     const response = await axios.post(`${endpoint}/user/login`,data);
     console.log(response);
      alert("Logged in successfull")
-     window.location.href = "/login"; 
+     window.location.href = "/chat"; 
     }catch(err){
          if(err.response.data.message==="User not found"){
             showValidationError('email-error', "User doesn't exist");
