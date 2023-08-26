@@ -37,7 +37,7 @@ async function postSignupPage() {
     }
     try{
     const response = await axios.post(`${endpoint}/user/login`,data);
-    console.log(response);
+    localStorage.setItem("token", response.data.token);
      alert("Logged in successfull")
      window.location.href = "/chat"; 
     }catch(err){
