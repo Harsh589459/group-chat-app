@@ -1,6 +1,7 @@
 const path = require('path');
 const User = require("../models/userModels");
 const Chat = require("../models/chatModels");
+const Op = require('sequelize')
 
 
 
@@ -29,7 +30,13 @@ const sendMessage = async (req, res, next) => {
 
   const getMessage = async (req,res,next)=>{
     try{
-       const messags =  await Chat.findAll()
+      const param = req.params.param;
+      const messags =  await Chat.findAll({where: {
+        id: {
+          [Op.gt]: param,
+        },
+      },})
+
        return res.status(200).json({messages:messags})
     }
     catch(error){

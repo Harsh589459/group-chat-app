@@ -39,12 +39,30 @@ function decodeToken(token) {
 
 async function getMessages() {
   try {
-    const res = await axios.get(`${endpoint}/chat/getMessages`);
+    let params=0;
+    const localStorageChats = JSON.parse(localStorage.getItem("chats"))
+    if(localStorageChats.length){
+      let array = JSON.parse(localStorage.getItem("chats"));
+      let length = JSON.parse(localStorage.getItem("chats")).length
+      params=array[length-1].id;
+
+    }
+
+    const res = await axios.get(`${endpoint}/chat/getMessages/${params}`);
     const token = localStorage.getItem("token");
     const decodedToken = decodeToken(token);
     const userId = decodedToken.userId;
-    chatBoxBody.innerHTML = "";
-    console.log(res.data.messages);
+    // chatBoxBody.innerHTML = "";
+    const chats =JSON.parse(localStorage.getItem("chats"));
+    if(!chats){
+      localStorage.setItem("chats",JSON.stringify(res.data.messages));
+    }
+    else{
+      res.data.messages.forEach((message)=>{
+        chats.push(message);
+      })
+      localStorage.setItem("chats",JSON.stringify(chats))
+    }
     res.data.messages.forEach((message) => {
       if (message.userId == userId) {
         const div = document.createElement("div");
@@ -110,5 +128,73 @@ setInterval(() => {
   getMessages();
 }, 1000);
 
+async function getMessagesFromLocalStorage(){
+  const messages = JSON.parse(localStorage.getItem("chats"));
+  console.log("message",messages);
+  const token  = localStorage.getItem("token");
+  const decodedToken = decodeToken(token);
+console.log("decodedToken",decodedToken);
+  const userId = decodedToken.userId;
+  chatBoxBody.innerHTML="";
+  if(messages){
+    messages.forEach((message)=>{
+      if(message.userId==userId){
+        const div = document.createElement("div");
+        chatBoxBody.appendChild(div);
+        const messageSendby = document.createElement("span");
+        messageSendby.classList.add(
+          "d-flex",
+          "justify-content-end",
+          "px-3",
+          "mb-1",
+          "text-uppercase",
+          "small",
+          "text-white"        );
+          messageSendby.appendChild(document.createTextNode("You"));
+          div.appendChild(messageSendby);
+          const messageBox = document.createElement("div");
+        const messageText = document.createElement("div");
+
+        messageBox.classList.add("d-flex", "justify-content-end", "mb-4");
+
+        messageText.classList.add("msg_cotainer_send");
+        messageText.appendChild(document.createTextNode(message.message));
+
+        messageBox.appendChild(messageText);
+        div.appendChild(messageBox);
+      } else {
+        const div = document.createElement("div");
+        chatBoxBody.appendChild(div);
+
+        const messageSendby = document.createElement("span");
+        messageSendby.classList.add(
+          "d-flex",
+          "justify-content-start",
+          "px-3",
+          "mb-1",
+          "text-uppercase",
+          "small",
+          "text-white"
+        );
+        messageSendby.appendChild(document.createTextNode(message.name));
+        div.appendChild(messageSendby);
+
+        const messageBox = document.createElement("div");
+        const messageText = document.createElement("div");
+
+        messageBox.classList.add("d-flex", "justify-content-start", "mb-4");
+
+        messageText.classList.add("msg_cotainer");
+        messageText.appendChild(document.createTextNode(message.message));
+
+        messageBox.appendChild(messageText);
+        div.appendChild(messageBox);
+      
+      }
+    })
+  }
+
+}
+
 sendBtn.addEventListener("click", messageSend);
-document.addEventListener("DOMContentLoaded", getMessages);
+document.addEventListener("DOMContentLoaded", getMessagesFromLocalStorage);
