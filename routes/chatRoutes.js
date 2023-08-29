@@ -8,7 +8,7 @@ router.use(express.static("public"))
 
 router.get('/',chatController.getChatPage);
 router.post('/sendMessage',userAuthentication.authentication,chatController.sendMessage)
-router.get('/getMessages/:param',chatController.getMessage)
+router.get('/getMessages',chatController.getMessage)
 
 
 module.exports=router;

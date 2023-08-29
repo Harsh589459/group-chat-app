@@ -1,16 +1,46 @@
-const endpoint = 'http://localhost:3000'
+
 
 const sendMessage = document.getElementById("messageTextArea");
 const sendBtn = document.getElementById("messageSendBtn");
 const chatBoxBody = document.getElementById("chatBoxBody");
+const uiGroup = document.getElementById("groups");
+const groupNameHeading = document.getElementById("groupNameHeading");
+
+async function activeGroup(e) {
+  chatBoxBody.innerHTML = "";
+  localStorage.setItem("chats", JSON.stringify([]));
+  groupNameHeading.innerHTML = "";
+  const activeLi = document.getElementsByClassName("active");
+  if (activeLi.length != 0) {
+    activeLi[0].removeAttribute("class", "active");
+  }
+  let li = e.target;
+  while (li.tagName !== "LI") {
+    li = li.parentElement;
+  }
+  li.setAttribute("class", "active");
+  const groupName = li.querySelector("span").textContent;
+  localStorage.setItem("groupName", groupName);
+  const span = document.createElement("span");
+  span.appendChild(document.createTextNode(groupName));
+  groupNameHeading.appendChild(span);
+  setInterval(() => {
+    getMessages();
+  }, 5000);
+}
 
 async function messageSend() {
   try {
     const message = sendMessage.value;
     sendMessage.value = "";
     const token = localStorage.getItem("token");
+    const groupName = localStorage.getItem("groupName");
+    if (!groupName || groupName == "") {
+      return alert("Select group to send the message");
+    }
     const data = {
-      message
+      message,
+      groupName
     }
     const res = await axios.post(
       `${endpoint}/chat/sendMessage`,
@@ -39,6 +69,10 @@ function decodeToken(token) {
 
 async function getMessages() {
   try {
+    const groupName = localStorage.getItem("groupName");
+    if (!groupName || groupName == "") {
+      return alert("Select group to get the message");
+    }
     let params=0;
     const localStorageChats = JSON.parse(localStorage.getItem("chats"))
     if(localStorageChats.length){
@@ -48,7 +82,7 @@ async function getMessages() {
 
     }
 
-    const res = await axios.get(`${endpoint}/chat/getMessages/${params}`);
+    const res = await axios.get(`http://localhost:3000/chat/getMessages`);
     const token = localStorage.getItem("token");
     const decodedToken = decodeToken(token);
     const userId = decodedToken.userId;
@@ -124,9 +158,9 @@ async function getMessages() {
     console.log(error);
   }
 }
-setInterval(() => {
-  getMessages();
-}, 1000);
+// setInterval(() => {
+//   getMessages();
+// }, 1000);
 
 async function getMessagesFromLocalStorage(){
   const messages = JSON.parse(localStorage.getItem("chats"));
@@ -198,3 +232,8 @@ console.log("decodedToken",decodedToken);
 
 sendBtn.addEventListener("click", messageSend);
 document.addEventListener("DOMContentLoaded", getMessagesFromLocalStorage);
+uiGroup.addEventListener("click",activeGroup);
+document.addEventListener('DOMContentLoaded',()=>{
+  localStorage.setItem("groupName","");
+  localStorage.setItem("chats",JSON.stringify([]))
+})
