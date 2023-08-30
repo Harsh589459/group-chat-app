@@ -1,4 +1,4 @@
-
+const endpoint = 'http://localhost:3000'
 
 const sendMessage = document.getElementById("messageTextArea");
 const sendBtn = document.getElementById("messageSendBtn");
@@ -31,6 +31,12 @@ async function activeGroup(e) {
 
 async function messageSend() {
   try {
+    if (chatBoxBody.querySelector(".groupMembersDiv")) {
+      const members = chatBoxBody.querySelectorAll(".groupMembersDiv");
+      members.forEach((member) => {
+        member.remove();
+      });
+    }
     const message = sendMessage.value;
     sendMessage.value = "";
     const token = localStorage.getItem("token");
@@ -82,7 +88,7 @@ async function getMessages() {
 
     }
 
-    const res = await axios.get(`http://localhost:3000/chat/getMessages`);
+    const res = await axios.get(`${endpoint}/chat/getMessages/param=${params}&groupName=${groupName}`);
     const token = localStorage.getItem("token");
     const decodedToken = decodeToken(token);
     const userId = decodedToken.userId;

@@ -9,4 +9,15 @@ router.post("/addToGroup", userAuthentication.authentication, groupController.ad
 
 router.get("/getGroups", userAuthentication.authentication, groupController.getGroups);
 
+router.post(
+    "/deleteFromGroup",
+    userAuthentication.authentication,
+    groupController.deleteFromGroup
+);
+
+router.get(
+    "/groupMembers/:groupName",
+    userAuthentication.authentication,
+    groupController.groupMembers
+);
 module.exports = router;
