@@ -88,7 +88,7 @@ async function getMessages() {
 
     }
 
-    const res = await axios.get(`${endpoint}/chat/getMessages/param=${params}&groupName=${groupName}`);
+    const res = await axios.get(`${endpoint}/chat/getMessages?param=${params}&groupName=${groupName}`);
     const token = localStorage.getItem("token");
     const decodedToken = decodeToken(token);
     const userId = decodedToken.userId;

@@ -1,7 +1,7 @@
 const path = require('path');
 const User = require("../models/userModels");
 const Chat = require("../models/chatModels");
-const Op = require('sequelize')
+const Op = require('sequelize').Op;
 const Group = require('../models/groupModel')
 
 
@@ -36,31 +36,30 @@ const sendMessage = async (req, res, next) => {
     }
   };
 
-  const getMessage = async (req,res,next)=>{
-    try{
-      const param = req.query.param;
-      console.log(req.query.groupName);
-      const group = await Group.findOne({
-        where:{name:req.query.groupName},
+  const getMessage = async (req, res, next) => {
+  try {
+    const param = Number(req.query.param);
+    console.log("param value:", param); // Add this line
 
-      });
-      const messages = await Chat.findAll({
-        where:{
-          [Op.and]:{
-            id:{
-              [Op.gt]:param,
-            },
-            groupId:group.dataValues.id,
-          }
-        }
-      })
-      return res.status(200).json({messages:messages})
-    }
-    catch(error){
-        console.log(error);
-
-    }
+    const group = await Group.findOne({
+      where: { name: req.query.groupName },
+    });
+    const messages = await Chat.findAll({
+      where: {
+        [Op.and]: {
+          id: {
+            [Op.gt]: param,
+          },
+          groupId: group.dataValues.id,
+        },
+      },
+    });
+    return res.status(200).json({ messages: messages });
+  } catch (error) {
+    console.log(error);
   }
+};
+  
 
 module.exports={
     getChatPage,
