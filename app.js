@@ -17,7 +17,7 @@ const groupRouter = require("./routes/groupRouter");
 //databse imported
 const sequelize = require("./util/database");
 
-const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 dotenv.config();
 
 app.use(express.json());
