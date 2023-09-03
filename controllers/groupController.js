@@ -38,7 +38,6 @@ exports.createGroup = async (req, res, next) => {
       userId: req.user.id,
       groupId: group.dataValues.id,
     });
-    console.log("res>>>>>>>>>>>>>>>",rs);
 
     res.status(201).json({ group: group.dataValues.name, members: members });
   } catch (error) {
@@ -55,7 +54,6 @@ exports.addToGroup = async (req, res, next) => {
     console.log(req.body.groupName)
 
     const group = await Group.findOne({ where: { name: groupName } });
-    console.log(">>>>>>>>>>>>>',",group)
     if (group) {
       const admin = await UserGroup.findOne({
         where: {

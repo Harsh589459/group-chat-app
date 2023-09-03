@@ -21,11 +21,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 app.use(express.json());
-app.use(
-    cors({
-        origin: "*",
-    })
-);
+// app.use(
+//     cors({
+//         origin: "*",
+//     })
+// );
 
 User.hasMany(Chat, { onDelete: "CASCADE", hooks: true });
 User.hasMany(Chat,{onDelete:"CASCADE",hooks:true})
