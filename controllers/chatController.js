@@ -1,7 +1,6 @@
 const path = require('path');
 const User = require("../models/userModels");
 const Chat = require("../models/chatModels");
-const Op = require('sequelize').Op;
 const Group = require('../models/groupModel')
 
 

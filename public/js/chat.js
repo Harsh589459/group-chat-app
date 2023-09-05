@@ -5,6 +5,26 @@ const sendBtn = document.getElementById("messageSendBtn");
 const chatBoxBody = document.getElementById("chatBoxBody");
 const uiGroup = document.getElementById("groups");
 const groupNameHeading = document.getElementById("groupNameHeading");
+const fileName=document.getElementById('fileName');
+const paperclipIcon = document.getElementById("paperclipIcon");
+const fileInput = document.getElementById("fileInput");
+
+paperclipIcon.addEventListener("click", () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener("change", (event) => {
+  const selectedFile = event.target.files[0];
+  if (selectedFile) {
+    fileName.innerHTML=selectedFile.name;
+
+    fileName.style.display='flex';
+    fileName.style.alignItems='center';
+    fileName.style.color='white';
+    
+  }
+});
+
 
 const socket = io("http://localhost:5000");
 socket.on("data", (data) => {
@@ -64,8 +84,11 @@ async function messageSend() {
 }
 
 function decodeToken(token) {
+  console.log("token",token);
   const base64Url = token.split(".")[1];
+  console.log("base64url",base64Url)
   const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  console.log("base64",base64);
   const jsonPayload = decodeURIComponent(
     atob(base64)
       .split("")
@@ -74,6 +97,7 @@ function decodeToken(token) {
       })
       .join("")
   );
+  console.log("jsonpayload",jsonPayload);
 
   return JSON.parse(jsonPayload);
 }

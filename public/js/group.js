@@ -171,3 +171,4 @@ addToGroupBtn.addEventListener("click", addToGroup);
 document.addEventListener("DOMContentLoaded", getGroups);
 deleteFromGroupBtn.addEventListener("click", deleteFromGroup);
 logoutBtn.addEventListener("click", logout);
+groupMembersBtn.addEventListener("click",groupMembers)
